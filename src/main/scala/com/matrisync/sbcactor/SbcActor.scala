@@ -5,17 +5,17 @@ import akka.pattern.ask
 import akka.contrib.pattern.ReceivePipeline
 import akka.event.LoggingReceive
 import akka.util.Timeout
+import com.matrisync.sbcactor.SbcActorProtocol.SbcActorRequest.{DoEval, Remember, ShowConfig, ShowMemory}
+import com.matrisync.sbcactor.SbcActorProtocol.SbcActorResponse.{Done, MessageNotRecognized}
 import com.typesafe.config.{Config, ConfigException}
-import com.matrisync.actors.InstrumentedActor
-import com.matrisync.sbcactor.sbcactorProtocol.sbcactorRequest._
-import com.matrisync.sbcactor.sbcactorProtocol.sbcactorResponse.{Done, MessageNotRecognized}
 import nl.grons.metrics.scala._
 import com.twitter.util.Eval
+
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
 
-trait SbcBehavior extends Actor {
+trait SbcActorBehavior extends Actor {
 
   import akka.event.{Logging, LoggingReceive}
   import akka.pattern.{CircuitBreaker, pipe}
@@ -61,7 +61,7 @@ trait SbcBehavior extends Actor {
 }
 
 class SbcActor
-  extends SbcBehavior
+  extends SbcActorBehavior
     with ActorInstrumentedLifeCycle
     with ReceiveCounterActor
     with ReceiveTimerActor

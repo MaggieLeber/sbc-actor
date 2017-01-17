@@ -6,8 +6,6 @@ scalaVersion := "2.11.8"
 
 val akkaVersion = "2.4.11"
 
-mainClass in(Compile, packageBin) := Some("com.matrisync.sbcactor.SbcActorMain")
-mainClass in(Compile, run) := Some("com.matrisync.sbcactor.SbcActorMain")
 
 
 // akka herself
@@ -51,4 +49,7 @@ libraryDependencies ++= Seq(
 libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.1.7",
   "org.scalatest" %% "scalatest" % "2.2.4" % "test")
+
+libraryDependencies += "org.json4s" % "json4s-native_2.11" % "3.5.0"
+libraryDependencies += "org.json4s" % "json4s-ext_2.11" % "3.5.0"
     

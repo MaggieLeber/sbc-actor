@@ -1,4 +1,5 @@
-package com.matrisync.sbc-actor
+package com.matrisync.sbcactor
+
 object SbcActorProtocol {
 
   sealed trait SbcActorProtocol extends Serializable
