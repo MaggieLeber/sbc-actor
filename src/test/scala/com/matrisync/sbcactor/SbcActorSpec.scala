@@ -1,12 +1,14 @@
 package com.matrisync.sbcactor
 
+import java.io.{ByteArrayOutputStream, PrintStream}
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 import akka.actor.ActorSystem
 import akka.pattern.ask
 import akka.testkit._
 import akka.util.Timeout
-import com.codahale.metrics.{MetricRegistry, Timer}
+import com.codahale.metrics.{ConsoleReporter, MetricRegistry, Timer}
 import com.matrisync.sbcactor.SbcActorProtocol.SbcActorRequest._
 import com.matrisync.sbcactor.SbcActorProtocol.SbcActorResponse.MessageNotRecognized
 import com.typesafe.config.{Config, ConfigFactory}
@@ -108,8 +110,18 @@ class SbcActorSpec extends
     "return metrics" in {
       whenReady(actor ? Metrics) {
         r => {
-          info(s"Metrics: ${r.asInstanceOf[MetricRegistry].toString}")
-          r.asInstanceOf[MetricRegistry].getMetrics.keySet.size must be > (1)
+          val registry = r.asInstanceOf[MetricRegistry]
+          info(s"Metrics: ${registry.toString}")
+          registry.getMetrics.keySet.size must be > (1)
+          val reportBuffer = new ByteArrayOutputStream
+          val reportStream = new PrintStream(reportBuffer)
+          val infoReporter = ConsoleReporter.forRegistry(registry)
+            .convertRatesTo(TimeUnit.SECONDS)
+            .convertDurationsTo(TimeUnit.MILLISECONDS).outputTo(reportStream).build()
+          infoReporter.start(1, TimeUnit.SECONDS)
+          infoReporter.report()
+          infoReporter.stop
+          info(reportBuffer.toString)
         }
       }
     }

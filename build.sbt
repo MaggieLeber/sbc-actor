@@ -6,7 +6,8 @@ scalaVersion := "2.11.8"
 
 val akkaVersion = "2.4.11"
 
-
+mainClass in(Compile, packageBin) := Some("com.matrisync.sbcactor.SbcActorMain")
+mainClass in(Compile, run) := Some("com.matrisync.sbcactor.SbcActorMain")
 
 // akka herself
 libraryDependencies ++= Seq(
