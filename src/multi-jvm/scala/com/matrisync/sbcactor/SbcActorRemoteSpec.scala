@@ -34,7 +34,7 @@ object RemoteTestConfig {
         remote {
           enabled-transports = ["akka.remote.netty.tcp"]
           netty.tcp {
-            hostname = "127.0.0.1"
+            hostname = "faithhold.dyndns.org"
             port = 2553
           }
           }
